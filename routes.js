@@ -26,7 +26,8 @@ const router=express.Router();
 
 router.get("/",(req,res)=>{
     console.log(`ok... ${process.pid}`);
-    res.sendFile(path.join(__dirname, 'home.html'));
+    // res.sendFile(path.join(__dirname, 'home.html'));
+    res.send("<h1>SMART Forest App Backend</h1>")
     // cluster.worker.kill();
 })
 
