@@ -23,25 +23,17 @@ import { fileURLToPath } from 'url';
 
 const router=express.Router();
 
-
-router.get("/",(req,res)=>{
-    console.log(`ok... ${process.pid}`);
-    // res.sendFile(path.join(__dirname, 'home.html'));
-    res.send("<h1>SMART Forest App Backend</h1>")
-    // cluster.worker.kill();
-})
-
 // declaring routes
 router.post("/signup",JV.usersignupJV, signup);
 router.post("/signin",JV.usersigninJV, signin);
 router.post("/totalAnimals",verify, totalAnimals);
 router.post("/allAnimalDetails",verify, allAnimalDetails);
-router.patch("/modifyAnimal",JV.modifyAnimalJV, verify, modifyAnimal); 
+router.patch("/modifyAnimal",JV.modifyAnimalJV, verify, modifyAnimal); //
 router.post("/onlineAnimals",verify, onlineAnimals);
 router.post("/animalHealthDetails",verify, animalHealthDetails);
-router.post("/particularAnimalDetail",JV.particularAnimalDetailJV, verify, particularAnimalDetail); 
+router.post("/particularAnimalDetail",JV.particularAnimalDetailJV, verify, particularAnimalDetail); //
 router.post("/allAnimalsAvailable",verify, allAnimalsAvailable);
-router.patch("/modifyGeoFence",JV.modifyGeofenceJV, verify, modifyGeoFence);
-router.post("/particularAnimalHistory",JV.particularAnimalHistoryJV, verify, particularAnimalHistory); 
+router.patch("/modifyGeoFence",JV.modifyGeofenceJV, verify, modifyGeoFence); //
+router.post("/particularAnimalHistory",JV.particularAnimalHistoryJV, verify, particularAnimalHistory); //
 
 export {router};

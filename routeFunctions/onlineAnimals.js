@@ -10,14 +10,14 @@ const Animal = mongoose.model("Animal", schema.animalSchema);
 export default function onlineAnimals(req, res) {
     var i, count;
     Animal.count({ Status: "online" }, function (err, totalOnlineAnimals) {
-        console.log("Error (onlineAnimals): ", err);
+        if(err) console.log("Error (onlineAnimals): ", err);
         count = totalOnlineAnimals;
     });
 
     var onlineAnimalResponseData = '';
     var jsonOnlineAnimalData = '';
     Animal.find({ Status: "online" }, function (err, foundOnlineAnimals) {
-        if (!err) {
+        try {
             for (i = 0; i < count; i++) {
                 const onlineAnimalData = {
                     AnimalID: foundOnlineAnimals[i]._id,
@@ -29,9 +29,9 @@ export default function onlineAnimals(req, res) {
                 onlineAnimalResponseData = onlineAnimalResponseData + jsonOnlineAnimalData;
             }
 
-            res.status(200).end(onlineAnimalResponseData);
+            res.status(200).send({onlineAnimalResponseData, success: true});
         }
-        else {
+        catch(err) {
             console.log("Error (onlineAnimals): ", err);
             res.status(400).send();
         }

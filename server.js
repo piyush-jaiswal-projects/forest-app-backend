@@ -29,23 +29,22 @@ const app = express();
 
 
 // Server
-const server = https.createServer({
-  key: fs.readFileSync(path.join(__dirname, 'sslCertificate', 'key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, 'sslCertificate', 'cert.pem'))
-}, app);
-let io = new Server(server);
+// const server = https.createServer({
+//   key: fs.readFileSync(path.join(__dirname, 'sslCertificate', 'key.pem')),
+//   cert: fs.readFileSync(path.join(__dirname, 'sslCertificate', 'cert.pem'))
+// }, app);
+// let io = new Server(server);
 
 
-// limiting concurrent requests
 const limiter = rateLimit({
-  windowMs: 5 * 1000, // 15 minutes
-  max: 25, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  windowMs: 5 * 1000,
+  max: 25,
   message: {
     code: 429,
     message: 'too many requests'
   },
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  standardHeaders: true, 
+  legacyHeaders: false, 
 })
 
 
@@ -53,7 +52,7 @@ const limiter = rateLimit({
 const port = process.env.PORT || 3000;
 const username = process.env.DB_USERNAME;
 const password = process.env.DB_PASSWORD;
-const url = `mongodb+srv://${username}:${password}@mongodatabase.slom4qc.mongodb.net/?retryWrites=true&w=majority`;
+const url = `mongodb+srv://${username}:${password}@mongodatabase.slom4qc.mongodb.net/forestApp?retryWrites=true&w=majority`;
 Connection(process.env.MONGODB_URI || url);
 
 
@@ -81,9 +80,16 @@ app.use(hsts({
 }));
 app.use('/', router);
 
+app.get("/",(req,res)=>{
+  console.log(`ok... ${process.pid}`);
+  res.status(200).send("<h1>SMART Forest App Backend</h1>")
+})
+
+  // cluster.worker.kill();
+  // res.sendFile(path.join(__dirname, 'home.html'));
 
 // socket connection for live data streaming
-io.on("connection", (socket) => {
+app.on("connection", (socket) => {
   var locationArray = [];
   socket.on("sendLiveLocation", (startData) => {
     // console.log(startData);
@@ -117,7 +123,7 @@ io.on("connection", (socket) => {
 //   });
 // }
 
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`>> Server started successfully at port ${port}`);
 });
 

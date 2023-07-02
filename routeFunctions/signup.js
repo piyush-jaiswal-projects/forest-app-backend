@@ -14,11 +14,9 @@ export default function signup(req, res) {
     if (validationRes == false) {
         return res.status(401).send("Invalid email/username");
     }
-    User.findOne({ Username: req.body.Username }, function (err, foundUser) {
+    User.findOne({ Username: req.body.Username }, async function (err, foundUser) {
         if (err) console.log("Error (signup): ", err);
         if (!foundUser) {
-            //ensuring no duplicate entry or signup
-
             var name = req.body.Name;
             var contact = req.body.Contact;
             var userName = req.body.Username;
@@ -30,7 +28,8 @@ export default function signup(req, res) {
                     if (err) console.log("Error (signup hash): ", err);
                     else {
                         hashedPass = hash;
-                        if (contact.length != 10) {
+                        let len = String(contact).length
+                        if (len !== 10) {
                             return res
                                 .status(401)
                                 .send(

@@ -38,7 +38,7 @@ export default function allAnimalDetails(req, res) {
             }
 
 
-            res.status(200).send(animalResponseData);
+            res.status(200).send({animalResponseData, success: true});
 
         } else {
             res.status(400).send();

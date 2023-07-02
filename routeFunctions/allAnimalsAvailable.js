@@ -28,10 +28,10 @@ export default function allAnimalsAvailable(req, res) {
                 TotalAnimalResponseData += jsonAnimalData;
             }
 
-            res.status(200).end(TotalAnimalResponseData);
+            res.status(200).send({TotalAnimalResponseData, success: true});
         }
         else {
-            res.status(400).send();
+            res.status(400).send({success: false});
         }
     });
 }
